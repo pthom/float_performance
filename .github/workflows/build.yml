@@ -5,6 +5,19 @@ on:
   pull_request:
 
 jobs:
+
+  LinuxTest:
+    runs-on: ubuntu-22.04
+  steps:
+      - uses: actions/checkout@v3
+      - name: Dependencies
+        run: |
+          sudo apt-get install g++-multilib
+          sudo python3 -m pip install pyperf
+      - name: Setup interactive tmate session
+        uses: mxschmitt/action-tmate@v3
+
+
   Linux:
     runs-on: ubuntu-22.04
 
