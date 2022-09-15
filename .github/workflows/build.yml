@@ -11,9 +11,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        build_type:
-          - debug
-          - release
         compiler:
           - gcc
           - clang
@@ -33,40 +30,36 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DCMAKE_CXX_COMPILER=${{ matrix.compiler }} -DCMAKE_C_COMPILER=${{ matrix.compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DGCC_ARCH=${{ matrix.arch }} ..
+          cmake -DCMAKE_CXX_COMPILER=${{ matrix.compiler }} -DCMAKE_C_COMPILER=${{ matrix.compiler }} -DCMAKE_BUILD_TYPE=Release -DGCC_ARCH=${{ matrix.arch }} ..
           make
           sudo pyperf system tune && ./perf
 
 
-  # MacOS:
-  #   runs-on: macos-11
+  MacOS:
+    runs-on: macos-11
 
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       build_type:
-  #         - debug
-  #         - release
-  #       arch:
-  #         - x86_64
-  #         - arm64
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - x86_64
+          - arm64
 
-  #   steps:
-  #     - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
 
-  #     - name: Configure
-  #       shell: bash
-  #       run: cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DOSX_ARCH=${{ matrix.arch }} -B cmake-build -S .github
+      - name: Dependencies
+        run: |
+          sudo python3 -m pip install pyperf
 
-  #     - name: Build
-  #       shell: bash
-  #       run: cmake --build cmake-build --parallel $(sysctl -n hw.ncpu)
+      - name: Build and run
+        run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_CXX_COMPILER=${{ matrix.compiler }} -DCMAKE_C_COMPILER=${{ matrix.compiler }} -DCMAKE_BUILD_TYPE=Release -DGCC_ARCH=${{ matrix.arch }} ..
+          make
+          sudo pyperf system tune && ./perf
 
-  #     - name: Run
-  #       if: matrix.arch == 'x86_64' # github's CI hosts seem to be running intel and can not run ARM
-  #       run: |
-  #         file cmake-build/example_implot
-  #         cmake-build/example_implot
 
   # Windows_MSVC:
   #   runs-on: windows-2022
