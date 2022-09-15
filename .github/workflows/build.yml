@@ -6,18 +6,6 @@ on:
 
 jobs:
 
-  LinuxTest:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v3
-      - name: Dependencies
-        run: |
-          sudo apt-get install g++-multilib
-          sudo python3 -m pip install pyperf
-      - name: Setup interactive tmate session
-        uses: mxschmitt/action-tmate@v3
-
-
   Linux:
     runs-on: ubuntu-22.04
 
@@ -102,34 +90,28 @@ jobs:
 
 
   # Windows_MingW: # MingW on Github CI does not fully support 32 bits: link fails when it tries to link 64 bits system libraries.
-  #   runs-on: windows-2022
+  Windows_MingW:
+    runs-on: windows-2022
 
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       build_type:
-  #         - debug
-  #         - release
-  #       arch:
-  #         - x64
-  #         # - Win32
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          # - Win32
+          - x64
 
-  #   steps:
-  #     - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
 
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         repository: ocornut/imgui
-  #         path: imgui
+      - name: Dependencies
+        run: |
+          python3 -m pip install pyperf
 
-  #     - name: Configure
-  #       shell: bash
-  #       run: cmake -G 'MinGW Makefiles' -DGCC_ARCH=${{ matrix.arch }} -B cmake-build -S .github
-
-  #     - name: Build
-  #       shell: bash
-  #       run: cmake --build cmake-build --parallel $NUMBER_OF_PROCESSORS
-
-  #     - name: Run (MingW)
-  #       run: .\cmake-build\example_implot.exe
-  
+      - name: Build and run
+        run: |
+          mkdir build
+          cd build
+          cmake -G 'MinGW Makefiles' -DGCC_ARCH=${{ matrix.arch }} -DCMAKE_BUILD_TYPE=Release
+          cmake --build .
+          pyperf system tune
+          .\perf
