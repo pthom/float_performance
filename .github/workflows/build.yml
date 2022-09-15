@@ -82,8 +82,8 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -G 'Visual Studio 17 2022' -A ${{ matrix.arch }} -DCMAKE_BUILD_TYPE=Release ..
-          cmake --build .
+          cmake -G 'Visual Studio 17 2022' -A ${{ matrix.arch }} ..
+          cmake --build . --config Release
           pyperf system tune
           .\Release\perf
 
