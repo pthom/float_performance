@@ -35,8 +35,7 @@ jobs:
           cd build
           cmake -DCMAKE_CXX_COMPILER=${{ matrix.compiler }} -DCMAKE_C_COMPILER=${{ matrix.compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DGCC_ARCH=${{ matrix.arch }} ..
           make
-          sudo pyperf system tune
-          ./perf
+          sudo pyperf system tune && ./perf
 
 
   # MacOS:
