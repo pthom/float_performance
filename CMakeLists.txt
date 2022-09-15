@@ -25,4 +25,8 @@ if(APPLE AND DEFINED OSX_ARCH)
     endif()
 endif()
 
-add_executable(perf_n perf_n.cpp)
+add_executable(perf perf.cpp)
+
+if (UNIX)
+    target_link_libraries(perf PRIVATE m stdlib)
+endif()
