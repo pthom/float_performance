@@ -89,29 +89,29 @@ jobs:
           .\Release\perf
 
 
-  # Windows_MingW: # MingW on Github CI does not fully support 32 bits: link fails when it tries to link 64 bits system libraries.
-  Windows_MingW:
-    runs-on: windows-2022
+  # Windows_MingW: # To be completed
+  # Windows_MingW:
+  #   runs-on: windows-2022
 
-    strategy:
-      fail-fast: false
-      matrix:
-        arch:
-          # - Win32
-          - x64
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       arch:
+  #         # - Win32
+  #         - x64
 
-    steps:
-      - uses: actions/checkout@v3
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      - name: Dependencies
-        run: |
-          python3 -m pip install pyperf
+  #     - name: Dependencies
+  #       run: |
+  #         python3 -m pip install pyperf
 
-      - name: Build and run
-        run: |
-          mkdir build
-          cd build
-          cmake -G 'MinGW Makefiles' -DGCC_ARCH=${{ matrix.arch }} -DCMAKE_BUILD_TYPE=Release ..
-          cmake --build .
-          pyperf system tune
-          .\perf
+  #     - name: Build and run
+  #       run: |
+  #         mkdir build
+  #         cd build
+  #         cmake -G 'MinGW Makefiles' -DGCC_ARCH=${{ matrix.arch }} -DCMAKE_BUILD_TYPE=Release ..
+  #         cmake --build .
+  #         pyperf system tune
+  #         .\perf
