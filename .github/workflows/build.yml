@@ -24,8 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # - name: Dependencies
-      #   run: sudo apt-get install g++-multilib
+      - name: Dependencies
+        run: sudo apt-get install g++-multilib
 
       - name: Build and run
         run: |
