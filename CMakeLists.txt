@@ -28,5 +28,5 @@ endif()
 add_executable(perf perf.cpp)
 
 if (UNIX)
-    target_link_libraries(perf PRIVATE m stdlib)
+    target_link_libraries(perf PRIVATE m stdc++)
 endif()
