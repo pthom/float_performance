@@ -1,7 +1,8 @@
 #define ANKERL_NANOBENCH_IMPLEMENT
-#include <nanobench.h>
+#include "nanobench.h"
 // #include "https://raw.githubusercontent.com/martinus/nanobench/master/src/include/nanobench.h"
 
+#include <iostream>
 #include <stdio.h>
 #include <math.h>
 #include <random>
@@ -47,32 +48,37 @@ void exercise_trigonometry()
 
 int main()
 {
+    ankerl::nanobench::Bench bench;
+
     printf("sizeof(float)=%zu sizeof(double)=%zu sizeof(long double)=%zu", sizeof(float), sizeof(double), sizeof(long double));
     if (sizeof(long double) > sizeof(double))
         printf(" => long double is 16 bytes!");
     printf("\n");
 
-    uint64_t minEpochs = 1000;
-    
+    bench.minEpochIterations(10);
 
-    ankerl::nanobench::Bench().minEpochIterations(minEpochs).run("division_float", [&] {
+    bench.run("division_float", [&] {
         exercise_division<float>();
     });
-    ankerl::nanobench::Bench().minEpochIterations(minEpochs).run("division_double", [&] {
+    bench.run("division_double", [&] {
         exercise_division<double>();
     });
-    ankerl::nanobench::Bench().minEpochIterations(minEpochs).run("division_long_double", [&] {
+    bench.run("division_long_double", [&] {
         exercise_division<long double>();
     });
 
 
-    ankerl::nanobench::Bench().minEpochIterations(minEpochs).run("trig_float", [&] {
+    bench.run("trig_float", [&] {
         exercise_trigonometry<float>();
     });
-    ankerl::nanobench::Bench().minEpochIterations(minEpochs).run("trig_double", [&] {
+    bench.run("trig_double", [&] {
         exercise_trigonometry<double>();
     });
-    ankerl::nanobench::Bench().minEpochIterations(minEpochs).run("trig_long_double", [&] {
+    bench.run("trig_long_double", [&] {
         exercise_trigonometry<long double>();
     });
+
+    printf("\n");
+    ankerl::nanobench::render(ankerl::nanobench::templates::csv(), bench, std::cout);
+    printf("\n");
 }
