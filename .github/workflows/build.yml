@@ -56,7 +56,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DGCC_ARCH=${{ matrix.arch }} ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DOSX_ARCH=${{ matrix.arch }} ..
           make
           sudo pyperf system tune && ./perf
 
