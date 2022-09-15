@@ -1,3 +1,5 @@
+See results as a google sheet: https://docs.google.com/spreadsheets/d/1Fyq9QXU8ZopL7pR1BlNTsyT6X5hftS9dfVyhdVHVEKE/edit?usp=sharing
+
 
 __[x64 msvc v19.latest / compiler explorer](https://godbolt.org/z/r5sr77PcG)__
 sizeof(float)=4 sizeof(double)=8 sizeof(long double)=8
@@ -233,7 +235,7 @@ sizeof(float)=4 sizeof(double)=8 sizeof(long double)=16 => long double is 16 byt
 
 
 
-__[x86-64 icx 2022.1.0](https://godbolt.org/z/4zvjMKdeK)__ (ICX - Intel® oneAPI DPC++/C++ Compiler)
+__[x86-64 icx 2022.1.0](https://godbolt.org/z/4zvjMKdeK)__ (ICX - Intel® oneAPI DPC++/C++ Compiler, seems newer)
 sizeof(float)=4 sizeof(double)=8 sizeof(long double)=16 => long double is 16 bytes!
 
 |               ns/op |                op/s |    err% |     total | benchmark
@@ -254,22 +256,42 @@ sizeof(float)=4 sizeof(double)=8 sizeof(long double)=16 => long double is 16 byt
 "benchmark";"trig_long_double";"op";1;0.00276578475;0.0122982779464679;0;0;0;0.093118943
 
 
-__Mac M1__
+__Mac M1 / Native__
 sizeof(float)=4 sizeof(double)=8 sizeof(long double)=8
 
 |               ns/op |                op/s |    err% |     total | benchmark
 |--------------------:|--------------------:|--------:|----------:|:----------
-|           27,882.41 |           35,864.90 |    0.1% |      0.36 | `division_float`
-|           33,305.09 |           30,025.44 |    0.1% |      0.40 | `division_double`
-|           33,310.20 |           30,020.83 |    0.1% |      0.40 | `division_long_double`
-|           74,783.16 |           13,371.99 |    0.1% |      0.89 | `trig_float`
-|          101,933.91 |            9,810.28 |    0.3% |      1.22 | `trig_double`
-|          101,655.13 |            9,837.18 |    0.1% |      1.21 | `trig_long_double`
+|           27,976.62 |           35,744.14 |    0.3% |      0.35 | `division_float`
+|           33,383.51 |           29,954.91 |    0.1% |      0.40 | `division_double`
+|           33,799.45 |           29,586.28 |    0.2% |      0.40 | `division_long_double`
+|           75,120.19 |           13,312.00 |    0.2% |      0.90 | `trig_float`
+|          102,346.90 |            9,770.69 |    0.4% |      1.22 | `trig_double`
+|          102,351.81 |            9,770.22 |    0.3% |      1.22 | `trig_long_double`
 
 "title";"name";"unit";"batch";"elapsed";"error %";"instructions";"branches";"branch misses";"total"
-"benchmark";"division_float";"op";1;2.78824129400571e-05;0.000583149875405158;0;0;0;0.356812833
-"benchmark";"division_double";"op";1;3.3305090376569e-05;0.000542991378877864;0;0;0;0.399037376
-"benchmark";"division_long_double";"op";1;3.33102015638575e-05;0.000589656327911935;0;0;0;0.402350582
-"benchmark";"trig_float";"op";1;7.47831589921807e-05;0.000709593133334645;0;0;0;0.894357751
-"benchmark";"trig_double";"op";1;0.000101933914418605;0.003121054420593;0;0;0;1.222062916
-"benchmark";"trig_long_double";"op";1;0.000101655125523013;0.000883494931197019;0;0;0;1.214481917
+"benchmark";"division_float";"op";1;2.79766151172893e-05;0.002989190545187;0;0;0;0.354927835
+"benchmark";"division_double";"op";1;3.33835079497908e-05;0.00100359136370019;0;0;0;0.399686835
+"benchmark";"division_long_double";"op";1;3.37994541484716e-05;0.00212037717312542;0;0;0;0.404246251
+"benchmark";"trig_float";"op";1;7.51201850564726e-05;0.00208708597143583;0;0;0;0.900484709
+"benchmark";"trig_double";"op";1;0.00010234689707113;0.00406605830280525;0;0;0;1.22289
+"benchmark";"trig_long_double";"op";1;0.000102351806640625;0.00301522491155147;0;0;0;1.223368168
+
+__Mac M1 / Intel emulation (Rosetta)__
+sizeof(float)=4 sizeof(double)=8 sizeof(long double)=16 => long double is 16 bytes!
+
+|               ns/op |                op/s |    err% |     total | benchmark
+|--------------------:|--------------------:|--------:|----------:|:----------
+|           36,947.93 |           27,065.12 |    0.3% |      0.01 | `division_float`
+|           33,761.10 |           29,619.89 |    0.2% |      0.01 | `division_double`
+|       10,147,587.50 |               98.55 |    0.4% |      1.22 | `division_long_double`
+|          156,104.20 |            6,405.98 |    1.9% |      0.02 | `trig_float`
+|          222,549.18 |            4,493.39 |    0.8% |      0.03 | `trig_double`
+|       10,901,666.70 |               91.73 |    0.2% |      1.31 | `trig_long_double`
+
+"title";"name";"unit";"batch";"elapsed";"error %";"instructions";"branches";"branch misses";"total"
+"benchmark";"division_float";"op";1;3.69479285714286e-05;0.00269074850321344;0;0;0;0.011669583
+"benchmark";"division_double";"op";1;3.37611e-05;0.00245632397643909;0;0;0;0.011893167
+"benchmark";"division_long_double";"op";1;0.0101475875;0.0044795726625424;0;0;0;1.219964835
+"benchmark";"trig_float";"op";1;0.0001561042;0.0185167318075245;0;0;0;0.018658584
+"benchmark";"trig_double";"op";1;0.000222549181818182;0.00798371305112732;0;0;0;0.0265675
+"benchmark";"trig_long_double";"op";1;0.0109016667;0.0021889148008578;0;0;0;1.309938623
