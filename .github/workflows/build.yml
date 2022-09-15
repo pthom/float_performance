@@ -8,7 +8,7 @@ jobs:
 
   LinuxTest:
     runs-on: ubuntu-22.04
-  steps:
+    steps:
       - uses: actions/checkout@v3
       - name: Dependencies
         run: |
