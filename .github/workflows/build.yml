@@ -111,7 +111,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -G 'MinGW Makefiles' -DGCC_ARCH=${{ matrix.arch }} -DCMAKE_BUILD_TYPE=Release
+          cmake -G 'MinGW Makefiles' -DGCC_ARCH=${{ matrix.arch }} -DCMAKE_BUILD_TYPE=Release ..
           cmake --build .
           pyperf system tune
           .\perf
