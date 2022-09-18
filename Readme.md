@@ -7,8 +7,8 @@ Benchmarks were run on MacOS/Linux/Windows, using clang/gcc/msvc/apple-clang/icc
 The tested types are: 
 
 * `float` (32 bits float)
-*  `double` (64 bits float) 
-*  `long double` : on Linux and Intel Macs, they are higher precision, i.e. 80 bits, stored on 4 bytes on 64bits architectures. On Windows and Mac M1 Arm, "long double" is a synonym of "double"
+*  `double` (64 bits float) 1
+*  `long double` : on Linux and Intel Macs, they are higher precision, i.e. 80 bits, stored on 16 bytes on 64bits architectures (and 12 bytes on 32bits arch). On Windows and Mac M1 Arm, "long double" is a synonym of "double"
 
 _Note: these numbers should be taken as the result of simple and perhaps naïve tests. They do not give an accurate comparison of performance between compilers or between platforms, as they were executed on different Virtual Machines (either using Compiler Explorer, or Github actions). In this document we compare the performance of different types on a __same__ platform._
 
